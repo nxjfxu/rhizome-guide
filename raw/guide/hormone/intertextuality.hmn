@@ -1,0 +1,118 @@
+#~ ~document
+
+\[title Intertextuality in Hormone]
+
+\[section (Hyper)Link in Hormone]
+
+In Hormone, you can create a link to another text using the '=>' (link) function.
+The following code creates a link to a fragment named 'somewhere-else'.
+
+\(~H #"(=> ~"somewhere-else~")")
+
+There is also a convenient shortcut.
+You can put the name of the text fragment to link to in square brackets,
+and it would be equivalent to the one before:
+
+\(~H "[somewhere-else]")
+
+To link to somewhere outside the Rhizome,
+you can use '/>', the generic URL link function:
+
+\(~H #"(/> ~"https://example.com~")")
+
+Which is equivalent to:
+
+\(~H #"[/> https://example.com]")
+
+\[note You need to write the full URL, including the protocol
+       ('https' in this example).]
+
+
+\[section Moving Information across Text Fragments]
+
+It would be rather boring if the user can move between fragments,
+but information, in the form of Hormone expressions, cannot.
+Hormone allows information to flow across the border between text fragments
+by first 'providing', and then 'requiring' them.
+
+In \[example/a-library], there are the definitions of a few functions.
+And then, the functions 'add-one' and 'add-two'
+are 'provided' using the '~>' (provide) function.
+By 'providing' these two function, what it is saying is that
+when another fragment 'requires' \[example/a-library],
+it will get those two functions.
+
+To 'require' another text fragment, you can use the '<~' (require) function:
+
+\(~H #"(<~~ ~"example/a-library~")")
+
+\(note "The above is equivalent to '[<~~ example/a-library]'")
+
+When you 'require' another fragment, that fragment is evaluated.
+The evaluation result is returned by the 'require' function.
+
+More importantly, the two functions 'provided' by \[example/a-library]
+are now available in this file:
+
+\[~H (add-one 1)]
+\[~H (add-two 1)]
+
+The 'private-add-two' function, which is not 'provided',
+is not available after we 'require':
+
+\[~H (private-add-two 1)]
+
+Since 'requiring' a fragment also returns its evaluation result,
+you can 'require' a fragment solely for its content,
+even when it does not 'provide' anything.
+Here, we are requiring the evaluation result from \[example/to-be-required]:
+
+\(~H #"(<~~ ~"example/to-be-required~")")
+
+As an example more representative of Hormone's typical uses,
+we can require \[example/a-thousand-plateaus],
+a book object we used as an example in \[guide/hormone],
+to obtain the book as an object:
+
+\(~H #"(<~~ ~"example/a-thousand-plateaus~")")
+
+\[subsection Re-Providing Information]
+
+If you have 'required' a fragment,
+you can 'provide' everything you have 'required' from that fragment
+using the '>~>' (re-provide) function:
+
+\(~H #"(>~~> ~"example/a-library~")")
+
+Now, any other fragment that 'requires' this fragment (\(=> ~.))
+will also 'require' everything we have required from \[example/a-library].
+
+\[subsection The Prelude]
+
+One of Rhizome's special fragments, the \[emph prelude] (\[.^]),
+is 'required' implicitly by every other fragment
+at the beginning of its evaluation.
+You never have to 'require' the prelude by yourself.
+It is always available.
+
+The prelude is a good place to 're-provide' things from other libraries.
+This is the only thing we are doing in the prelude of this guide.
+
+
+\[subsection 'Requiring' for More than One Time]
+
+You can 'require' the same fragment for more than one time.
+However, when you 'require' it again, it will not be evaluated again.
+Instead, the 'require' will return the same value you got last time.
+The 'required' definitions will remain available.
+
+Hormone makes sure that no fragment is evaluated more than once
+when they are 'required'.
+This is for performance reasons.
+It is entirely possible that if you do evaluate the other fragment again,
+you would get back another value,
+but you should refrain from coding in that fashion.
+
+
+
+

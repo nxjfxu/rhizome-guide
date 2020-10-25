@@ -1,0 +1,39 @@
+#~ ~document
+
+\[title Some Special Hormone Operations]
+
+\[section 'This Fragment']
+
+The Hormone operator '~.' (this)
+can be used to obtain the name of the current fragment, as a string:
+
+\(~H "~~.")
+
+\(~H #"(=> ~~.)")
+
+'~.' returns the name of the fragment in which it is evaluated.
+If a function uses '~.' inside,
+and you 'require' this function from another fragment,
+then when calling the function,
+'~.' will return the name of the fragment that 'required' the function,
+not where the function is defined.
+
+
+\[label markdown]
+\[section Markdown]
+
+Hormone provides '~markdown', a built-in Markdown formatter
+that takes an arbitrary number of arguments, turn them into strings like '>~<',
+parses the strings as a Markdown document,
+and renders them into HTML:
+
+\(~H #"
+(~~markdown
+ ~"### Markdown Text~
+  
+  **Markdown** Text~")") 
+
+The '~document' function, with which the fragments in this guide are typeset,
+uses '~markdown' internally.
+You can find the definition of '~document' at \[lib/document].
+

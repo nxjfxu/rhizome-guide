@@ -1,0 +1,121 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" >
+<link rel="stylesheet" href=".&#x2F;..&#x2F;..&#x2F;../default-style.css"/>
+<link rel="stylesheet" href=".&#x2F;..&#x2F;..&#x2F;../style.css"/>
+
+
+        <title>[guide&#x2F;hormone&#x2F;special]</title>
+    </head>
+    <body>
+        <hr/>
+        <nav><a class="anchor" href=".&#x2F;..&#x2F;..&#x2F;../anchorage.html">[^^^]</a>
+</nav>
+        <hr/>
+        <h1 id="id-header"><pre> [guide&#x2F;hormone&#x2F;special]</pre></h1>
+        <hr/>
+        <div id="main"><hr/><pre>Contents:<a class="anchor" href="./../../guide/table-of-contents.html">[guide/table-of-contents]</a>
+
+Prev:<a class="anchor" href="./../../guide/hormone/reader.html">[guide/hormone/reader]</a>
+This is the last item</pre><hr/><div style="font-family: sans-serif;"><h1>Some Special Hormone Operations</h1>
+<h2>'This Fragment'</h2>
+<p>The Hormone operator '~.' (this)
+can be used to obtain the name of the current fragment, as a string:</p>
+<div class="H"><pre class="H-code"><span class="H-title">Code</span>~.</pre><span class="H-title">Result</span><div>guide/hormone/special</div></div>
+<div class="H"><pre class="H-code"><span class="H-title">Code</span>(=> ~.)</pre><span class="H-title">Result</span><div><a class="anchor" href="./../../guide/hormone/special.html">[guide/hormone/special]</a></div></div>
+<p>'~.' returns the name of the fragment in which it is evaluated.
+If a function uses '~.' inside,
+and you 'require' this function from another fragment,
+then when calling the function,
+'~.' will return the name of the fragment that 'required' the function,
+not where the function is defined.</p>
+<a id="markdown"/>
+<h2>Markdown</h2>
+<p>Hormone provides '~markdown', a built-in Markdown formatter
+that takes an arbitrary number of arguments, turn them into strings like '&gt;~&lt;',
+parses the strings as a Markdown document,
+and renders them into HTML:</p>
+<div class="H"><pre class="H-code"><span class="H-title">Code</span>
+(~markdown
+ "### Markdown Text  
+  **Markdown** Text")</pre><span class="H-title">Result</span><div><h3>Markdown Text</h3>
+<p><strong>Markdown</strong> Text</p>
+</div></div> 
+<p>The '~document' function, with which the fragments in this guide are typeset,
+uses '~markdown' internally.
+You can find the definition of '~document' at <a class="anchor" href="./../../lib/document.html">[lib/document]</a>.</p>
+<hr/><pre>Contents:<a class="anchor" href="./../../guide/table-of-contents.html">[guide/table-of-contents]</a>
+
+Prev:<a class="anchor" href="./../../guide/hormone/reader.html">[guide/hormone/reader]</a>
+This is the last item</pre><hr/><hr/><p>This document is generated using the 'document' typesetter  =><a class="anchor" href="./../../.^.html">[.^]</a></p><h3>Source</h3><button class="generic-button" id="doc-toggle" style="width: 5em;">Hide</button><pre id="doc-source" style="background: lightgreen;">
+#~ ~document
+
+\[title Some Special Hormone Operations]
+
+\[section 'This Fragment']
+
+The Hormone operator '~.' (this)
+can be used to obtain the name of the current fragment, as a string:
+
+\(~H &quot;~~.&quot;)
+
+\(~H #&quot;(=&gt; ~~.)&quot;)
+
+'~.' returns the name of the fragment in which it is evaluated.
+If a function uses '~.' inside,
+and you 'require' this function from another fragment,
+then when calling the function,
+'~.' will return the name of the fragment that 'required' the function,
+not where the function is defined.
+
+
+\[label markdown]
+\[section Markdown]
+
+Hormone provides '~markdown', a built-in Markdown formatter
+that takes an arbitrary number of arguments, turn them into strings like '&gt;~&lt;',
+parses the strings as a Markdown document,
+and renders them into HTML:
+
+\(~H #&quot;
+(~~markdown
+ ~&quot;### Markdown Text~
+  
+  **Markdown** Text~&quot;)&quot;) 
+
+The '~document' function, with which the fragments in this guide are typeset,
+uses '~markdown' internally.
+You can find the definition of '~document' at \[lib/document].
+
+
+</pre><script>
+
+let source_hidden = false;
+let source = document.querySelector("#doc-source");
+let toggle = document.querySelector("#doc-toggle");
+
+function hide_source() {
+  source.style.display = "none";
+  toggle.innerHTML = "Show";
+  source_hidden = true;
+}
+
+function show_source () {
+  source.style.display = "block";
+  toggle.innerHTML = "Hide";
+  source_hidden = false;
+}
+
+function toggle_source() {
+  (source_hidden ? show_source : hide_source)();
+}
+
+toggle.onclick = toggle_source;
+
+hide_source();</script></div></div>
+        <hr/>
+        <pre> </pre>
+        <hr/>
+        <span>3258 - 6.22ms</span>
+    </body>
+</html>

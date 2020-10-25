@@ -1,0 +1,42 @@
+#!
+
+(<- %book (>+< . (~ (\ (s)
+ (>~<
+  #"<pre>"
+  "~~~~BOOK~~~~"                                        "~<"
+  "-"                                                   "~<"
+  "- " (>+ s title)                                     "~<"
+  "- " (? (>+? s author) (>~< "By: " (>+ s author)) "")
+  " "     (? (>+? s year)   (>+ s year)             "") "~<"
+                                                        "~<"
+  (? (>+? s source)
+     (>~<
+      "~~ S:" (=> (>+ s source)) ;"~<"
+;      "~~ N:" (=> (>~< (>+ s source) "/note"))
+     )
+     "")
+  "~<"
+  #"</pre>"
+ )
+ ))
+
+ (~inline (\(s)
+  (>~< (? (>+? s author) (>+ s author) "") " "
+       (? (>+? s year) (>~< "[" (>+ s year) "]") "") " "
+       (>+ s title)
+       (? (>+? s source) (>~< "  => " (=> (>+ s source)) "") "")
+  )))
+
+ (~bibtex (\(s)
+  (>~< #"<pre>"
+       "@book{" (>+? s source) ",~<"
+       "  title=~"" (>+ s title) "~"" ",~<"
+       "  author=~"" (>+? s author) "~"" ",~<"
+       "  year=~"" (>+? s year) "~"" "~<"
+       "}~<"
+       #"</pre>"
+  )))
+))
+
+
+(~> %book)

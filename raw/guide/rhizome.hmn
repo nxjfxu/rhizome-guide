@@ -1,0 +1,73 @@
+#~ ~document
+
+\[title Rhizome]
+
+Rhizome organizes text by storing them in text \[emph fragments].
+Each Rhizome fragment is identified by a unique name.
+
+Every chapter of this guide is a fragment.
+The name of this fragment is '\~. '.
+
+When Rhizome shows you a text fragment,
+it first processes the text using \[emph Hormone].
+The text in the fragment will be executed as a Hormone script.
+
+See the next chapter for an introduction to Hormone => \[guide/hormone]
+
+
+\[section Editing]
+
+\[note
+If you are reading the static HTML version of this guide,
+you will not see the edit button.
+You can launch a local Rhizome server to edit text.
+]
+
+To edit an existing text fragment,
+click on the '_/' link at the bottom of the web-page.
+You will be taken to the edit page,
+where you can modify the textual content of the fragment.
+After finishing your edit,
+click on the '>~' button at the bottom to save.
+
+
+\[section New Fragment]
+
+\[note
+If you are reading the static HTML version of this guide,
+you will not see the new button.
+You can launch a local Rhizome server to edit text.
+]
+
+To create a new fragment,
+click on the '[+]' link at the top of the web-page.
+You will be taken to a page where you can put down
+the name of a new fragment and its content.
+After finishing your edit,
+click on the '>~' button at the bottom to save.
+
+
+\[section Anchor]
+
+When creating or editing a fragment,
+you will see a checkbox with the label '[^]' next to it.
+This is the \[emph anchor] option.
+
+If a fragment is 'anchored', then it will show up in the \[emph anchorage].
+You can access the anchorage
+by following the '[^^^]' link on the top of every Rhizome page.
+You can anchor fragments to access them more easily.
+
+
+\[section Name]
+
+A Rhizome name can only contain characters (in any language), numbers,
+the '-' (hyphen) symbol, and the '/' (slash) symbol.
+
+For example, the name of this document entry is '\~. '.
+
+Even though names can contain '/',
+Rhizome \[emph does not] give them any hierarchy like file systems would.
+For example, 'foo/bar' is not a 'subdirectory' or 'child' of 'foo',
+nor is it 'contained' within 'foo'.
+

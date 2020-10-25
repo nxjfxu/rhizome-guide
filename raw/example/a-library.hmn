@@ -1,0 +1,7 @@
+\(<- add-one (\(x) (+ x 1)))
+\(<- add-two (\(x) (+ x 2)))
+\(<- private-add-two (\(x) (+ 2 x)))
+
+\(~> add-one add-two)
+
+Provided two functions: add-one and add-two.

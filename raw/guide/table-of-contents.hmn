@@ -1,0 +1,58 @@
+#!
+
+(<- find-prev-and-next
+ (<-- (fpan (\(p x l)
+             (? (.? l)
+                (>< p l)
+                (? (= (<>< l) x)
+                   (>< p (? (.? (><> l)) . (<>< (><> l))))
+                   (fpan (<>< l) x (><> l))))
+      ))
+  (\(x l) (fpan . x l))
+))
+
+
+(<- toc-name ~.)
+
+(<- %toc
+ (>+< .
+  (items .)
+  (~ (\(s)
+      (>~< #"<hr/><pre>"
+           (.> >~< (map (\(i) (>~< "- " (=> i) "~<")) (>+ s items)))
+           #"</pre><hr/>")))
+  (add-item (\(s item) (!+< s (items (++ (>+ s items) (list item))))))
+
+  (~nav (\(s) 
+         (<-- (pn (find-prev-and-next ~. (>+ s items)))
+          (<-- (p (<>< pn)) (n (><> pn))
+           (<-- (~p (? (.? p) "This is the first item" (>~< "Prev:" (=> p))))
+                (~n (? (.? n) "This is the last item" (>~< "Next:" (=> n))))
+            (>~< #"<hr/><pre>"
+                 "Contents:" (=> toc-name)
+                 "~<~<"
+                 ~p
+                 "~<"
+                 ~n
+                 #"</pre><hr/>")
+  )))))
+
+))
+
+(<- toc
+(>+< %toc
+ (items .)
+))
+
+(-> toc add-item "guide")
+(-> toc add-item "guide/rhizome")
+(-> toc add-item "guide/hormone")
+(-> toc add-item "guide/hormone/basic")
+(-> toc add-item "guide/hormone/intertextuality")
+(-> toc add-item "guide/hormone/data")
+(-> toc add-item "guide/hormone/object")
+(-> toc add-item "guide/hormone/reader")
+(-> toc add-item "guide/hormone/special")
+
+toc
+

@@ -1,0 +1,47 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" >
+<link rel="stylesheet" href=".&#x2F;..&#x2F;..&#x2F;../default-style.css"/>
+<link rel="stylesheet" href=".&#x2F;..&#x2F;..&#x2F;../style.css"/>
+
+
+        <title>[lib&#x2F;document&#x2F;script]</title>
+    </head>
+    <body>
+        <hr/>
+        <nav><a class="anchor" href=".&#x2F;..&#x2F;..&#x2F;../anchorage.html">[^^^]</a>
+</nav>
+        <hr/>
+        <h1 id="id-header"><pre> [lib&#x2F;document&#x2F;script]</pre></h1>
+        <hr/>
+        <div id="main">
+
+let source_hidden = false;
+let source = document.querySelector("#doc-source");
+let toggle = document.querySelector("#doc-toggle");
+
+function hide_source() {
+  source.style.display = "none";
+  toggle.innerHTML = "Show";
+  source_hidden = true;
+}
+
+function show_source () {
+  source.style.display = "block";
+  toggle.innerHTML = "Hide";
+  source_hidden = false;
+}
+
+function toggle_source() {
+  (source_hidden ? show_source : hide_source)();
+}
+
+toggle.onclick = toggle_source;
+
+hide_source();</div>
+        <hr/>
+        <pre> </pre>
+        <hr/>
+        <span>286 - 0.78ms</span>
+    </body>
+</html>

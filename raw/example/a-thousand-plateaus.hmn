@@ -1,0 +1,10 @@
+#!
+
+[<~ example/book]
+
+(>+< %book
+ (title "A Thousand Plateaus")
+ (author "Gilles Deleuze and Felix Guattari")
+ (year 1980)
+ (source ~.)
+)

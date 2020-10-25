@@ -1,0 +1,17 @@
+#~ ~markdown
+
+# Markdown Example
+
+This is a **markdown** file.
+Text in this file is rendered as _markdown_ text.
+
+You still need to use '\\\\' for *Hormone* expressions.
+
+'~markdown' does not call the typesetter method of objects:
+
+\[<~ example/a-thousand-plateaus]
+
+... therefore, '~markdown' is more useful as building block for other readers.
+
+
+Back: \[guide/hormone/reader]

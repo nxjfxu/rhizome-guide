@@ -1,0 +1,255 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" >
+<link rel="stylesheet" href=".&#x2F;..&#x2F;..&#x2F;../default-style.css"/>
+<link rel="stylesheet" href=".&#x2F;..&#x2F;..&#x2F;../style.css"/>
+
+
+        <title>[guide&#x2F;hormone&#x2F;intertextuality]</title>
+    </head>
+    <body>
+        <hr/>
+        <nav><a class="anchor" href=".&#x2F;..&#x2F;..&#x2F;../anchorage.html">[^^^]</a>
+</nav>
+        <hr/>
+        <h1 id="id-header"><pre> [guide&#x2F;hormone&#x2F;intertextuality]</pre></h1>
+        <hr/>
+        <div id="main"><hr/><pre>Contents:<a class="anchor" href="./../../guide/table-of-contents.html">[guide/table-of-contents]</a>
+
+Prev:<a class="anchor" href="./../../guide/hormone/basic.html">[guide/hormone/basic]</a>
+Next:<a class="anchor" href="./../../guide/hormone/data.html">[guide/hormone/data]</a></pre><hr/><div style="font-family: sans-serif;"><h1>Intertextuality in Hormone</h1>
+<h2>(Hyper)Link in Hormone</h2>
+<p>In Hormone, you can create a link to another text using the '=&gt;' (link) function.
+The following code creates a link to a fragment named 'somewhere-else'.</p>
+<div class="H"><pre class="H-code"><span class="H-title">Code</span>(=> "somewhere-else")</pre><span class="H-title">Result</span><div><a class="anchor" href="./../../somewhere-else.html">[somewhere-else]</a></div></div>
+<p>There is also a convenient shortcut.
+You can put the name of the text fragment to link to in square brackets,
+and it would be equivalent to the one before:</p>
+<div class="H"><pre class="H-code"><span class="H-title">Code</span>[somewhere-else]</pre><span class="H-title">Result</span><div><a class="anchor" href="./../../somewhere-else.html">[somewhere-else]</a></div></div>
+<p>To link to somewhere outside the Rhizome,
+you can use '/&gt;', the generic URL link function:</p>
+<div class="H"><pre class="H-code"><span class="H-title">Code</span>(/> "https://example.com")</pre><span class="H-title">Result</span><div><a class="anchor" href="https://example.com"><[https://example.com]></a></div></div>
+<p>Which is equivalent to:</p>
+<div class="H"><pre class="H-code"><span class="H-title">Code</span>[/> https://example.com]</pre><span class="H-title">Result</span><div><a class="anchor" href="https://example.com"><[https://example.com]></a></div></div>
+<div class="note"><span class="block-title note-title">Note</span><span>You need to write the full URL, including the protocol
+       ('https' in this example).</span></div>
+<h2>Moving Information across Text Fragments</h2>
+<p>It would be rather boring if the user can move between fragments,
+but information, in the form of Hormone expressions, cannot.
+Hormone allows information to flow across the border between text fragments
+by first 'providing', and then 'requiring' them.</p>
+<p>In <a class="anchor" href="./../../example/a-library.html">[example/a-library]</a>, there are the definitions of a few functions.
+And then, the functions 'add-one' and 'add-two'
+are 'provided' using the '~&gt;' (provide) function.
+By 'providing' these two function, what it is saying is that
+when another fragment 'requires' <a class="anchor" href="./../../example/a-library.html">[example/a-library]</a>,
+it will get those two functions.</p>
+<p>To 'require' another text fragment, you can use the '&lt;~' (require) function:</p>
+<div class="H"><pre class="H-code"><span class="H-title">Code</span>(<~ "example/a-library")</pre><span class="H-title">Result</span><div>
+<p>Provided two functions: add-one and add-two.</p>
+</div></div>
+<div class="note"><span class="block-title note-title">Note</span><span>The above is equivalent to '[&lt;~ example/a-library]'</span></div>
+<p>When you 'require' another fragment, that fragment is evaluated.
+The evaluation result is returned by the 'require' function.</p>
+<p>More importantly, the two functions 'provided' by <a class="anchor" href="./../../example/a-library.html">[example/a-library]</a>
+are now available in this file:</p>
+<div class="H"><pre class="H-code"><span class="H-title">Code</span>(add-one 1)</pre><span class="H-title">Result</span><div>2</div></div>
+<div class="H"><pre class="H-code"><span class="H-title">Code</span>(add-two 1)</pre><span class="H-title">Result</span><div>3</div></div>
+<p>The 'private-add-two' function, which is not 'provided',
+is not available after we 'require':</p>
+<div class="H"><pre class="H-code"><span class="H-title">Code</span>(private-add-two 1)</pre><span class="H-title">Result</span><div><span class="error">!!( 'private-add-two' is undefined. )</span></div></div>
+<p>Since 'requiring' a fragment also returns its evaluation result,
+you can 'require' a fragment solely for its content,
+even when it does not 'provide' anything.
+Here, we are requiring the evaluation result from <a class="anchor" href="./../../example/to-be-required.html">[example/to-be-required]</a>:</p>
+<div class="H"><pre class="H-code"><span class="H-title">Code</span>(<~ "example/to-be-required")</pre><span class="H-title">Result</span><div>Hello!  One plus one is 2.  Link to the guide: <a class="anchor" href="./../guide.html">[guide]</a>.</div></div>
+<p>As an example more representative of Hormone's typical uses,
+we can require <a class="anchor" href="./../../example/a-thousand-plateaus.html">[example/a-thousand-plateaus]</a>,
+a book object we used as an example in <a class="anchor" href="./../../guide/hormone.html">[guide/hormone]</a>,
+to obtain the book as an object:</p>
+<div class="H"><pre class="H-code"><span class="H-title">Code</span>(<~ "example/a-thousand-plateaus")</pre><span class="H-title">Result</span><div><pre>~~BOOK~~
+-
+- A Thousand Plateaus
+- By: Gilles Deleuze and Felix Guattari 1980
+<p>~ S:<a class="anchor" href="./../../example/a-thousand-plateaus.html">[example/a-thousand-plateaus]</a>
+</pre></div></div></p>
+<h3>Re-Providing Information</h3>
+<p>If you have 'required' a fragment,
+you can 'provide' everything you have 'required' from that fragment
+using the '&gt;~&gt;' (re-provide) function:</p>
+<div class="H"><pre class="H-code"><span class="H-title">Code</span>(>~> "example/a-library")</pre><span class="H-title">Result</span><div></div></div>
+<p>Now, any other fragment that 'requires' this fragment (<a class="anchor" href="./../../guide/hormone/intertextuality.html">[guide/hormone/intertextuality]</a>)
+will also 'require' everything we have required from <a class="anchor" href="./../../example/a-library.html">[example/a-library]</a>.</p>
+<h3>The Prelude</h3>
+<p>One of Rhizome's special fragments, the <em>prelude</em> (<a class="anchor" href="./../../.^.html">[.^]</a>),
+is 'required' implicitly by every other fragment
+at the beginning of its evaluation.
+You never have to 'require' the prelude by yourself.
+It is always available.</p>
+<p>The prelude is a good place to 're-provide' things from other libraries.
+This is the only thing we are doing in the prelude of this guide.</p>
+<h3>'Requiring' for More than One Time</h3>
+<p>You can 'require' the same fragment for more than one time.
+However, when you 'require' it again, it will not be evaluated again.
+Instead, the 'require' will return the same value you got last time.
+The 'required' definitions will remain available.</p>
+<p>Hormone makes sure that no fragment is evaluated more than once
+when they are 'required'.
+This is for performance reasons.
+It is entirely possible that if you do evaluate the other fragment again,
+you would get back another value,
+but you should refrain from coding in that fashion.</p>
+<hr/><pre>Contents:<a class="anchor" href="./../../guide/table-of-contents.html">[guide/table-of-contents]</a>
+
+Prev:<a class="anchor" href="./../../guide/hormone/basic.html">[guide/hormone/basic]</a>
+Next:<a class="anchor" href="./../../guide/hormone/data.html">[guide/hormone/data]</a></pre><hr/><hr/><p>This document is generated using the 'document' typesetter  =><a class="anchor" href="./../../.^.html">[.^]</a></p><h3>Source</h3><button class="generic-button" id="doc-toggle" style="width: 5em;">Hide</button><pre id="doc-source" style="background: lightgreen;">
+#~ ~document
+
+\[title Intertextuality in Hormone]
+
+\[section (Hyper)Link in Hormone]
+
+In Hormone, you can create a link to another text using the '=&gt;' (link) function.
+The following code creates a link to a fragment named 'somewhere-else'.
+
+\(~H #&quot;(=&gt; ~&quot;somewhere-else~&quot;)&quot;)
+
+There is also a convenient shortcut.
+You can put the name of the text fragment to link to in square brackets,
+and it would be equivalent to the one before:
+
+\(~H &quot;[somewhere-else]&quot;)
+
+To link to somewhere outside the Rhizome,
+you can use '/&gt;', the generic URL link function:
+
+\(~H #&quot;(/&gt; ~&quot;https://example.com~&quot;)&quot;)
+
+Which is equivalent to:
+
+\(~H #&quot;[/&gt; https://example.com]&quot;)
+
+\[note You need to write the full URL, including the protocol
+       ('https' in this example).]
+
+
+\[section Moving Information across Text Fragments]
+
+It would be rather boring if the user can move between fragments,
+but information, in the form of Hormone expressions, cannot.
+Hormone allows information to flow across the border between text fragments
+by first 'providing', and then 'requiring' them.
+
+In \[example/a-library], there are the definitions of a few functions.
+And then, the functions 'add-one' and 'add-two'
+are 'provided' using the '~&gt;' (provide) function.
+By 'providing' these two function, what it is saying is that
+when another fragment 'requires' \[example/a-library],
+it will get those two functions.
+
+To 'require' another text fragment, you can use the '&lt;~' (require) function:
+
+\(~H #&quot;(&lt;~~ ~&quot;example/a-library~&quot;)&quot;)
+
+\(note &quot;The above is equivalent to '[&lt;~~ example/a-library]'&quot;)
+
+When you 'require' another fragment, that fragment is evaluated.
+The evaluation result is returned by the 'require' function.
+
+More importantly, the two functions 'provided' by \[example/a-library]
+are now available in this file:
+
+\[~H (add-one 1)]
+\[~H (add-two 1)]
+
+The 'private-add-two' function, which is not 'provided',
+is not available after we 'require':
+
+\[~H (private-add-two 1)]
+
+Since 'requiring' a fragment also returns its evaluation result,
+you can 'require' a fragment solely for its content,
+even when it does not 'provide' anything.
+Here, we are requiring the evaluation result from \[example/to-be-required]:
+
+\(~H #&quot;(&lt;~~ ~&quot;example/to-be-required~&quot;)&quot;)
+
+As an example more representative of Hormone's typical uses,
+we can require \[example/a-thousand-plateaus],
+a book object we used as an example in \[guide/hormone],
+to obtain the book as an object:
+
+\(~H #&quot;(&lt;~~ ~&quot;example/a-thousand-plateaus~&quot;)&quot;)
+
+\[subsection Re-Providing Information]
+
+If you have 'required' a fragment,
+you can 'provide' everything you have 'required' from that fragment
+using the '&gt;~&gt;' (re-provide) function:
+
+\(~H #&quot;(&gt;~~&gt; ~&quot;example/a-library~&quot;)&quot;)
+
+Now, any other fragment that 'requires' this fragment (\(=&gt; ~.))
+will also 'require' everything we have required from \[example/a-library].
+
+\[subsection The Prelude]
+
+One of Rhizome's special fragments, the \[emph prelude] (\[.^]),
+is 'required' implicitly by every other fragment
+at the beginning of its evaluation.
+You never have to 'require' the prelude by yourself.
+It is always available.
+
+The prelude is a good place to 're-provide' things from other libraries.
+This is the only thing we are doing in the prelude of this guide.
+
+
+\[subsection 'Requiring' for More than One Time]
+
+You can 'require' the same fragment for more than one time.
+However, when you 'require' it again, it will not be evaluated again.
+Instead, the 'require' will return the same value you got last time.
+The 'required' definitions will remain available.
+
+Hormone makes sure that no fragment is evaluated more than once
+when they are 'required'.
+This is for performance reasons.
+It is entirely possible that if you do evaluate the other fragment again,
+you would get back another value,
+but you should refrain from coding in that fashion.
+
+
+
+
+
+</pre><script>
+
+let source_hidden = false;
+let source = document.querySelector("#doc-source");
+let toggle = document.querySelector("#doc-toggle");
+
+function hide_source() {
+  source.style.display = "none";
+  toggle.innerHTML = "Show";
+  source_hidden = true;
+}
+
+function show_source () {
+  source.style.display = "block";
+  toggle.innerHTML = "Hide";
+  source_hidden = false;
+}
+
+function toggle_source() {
+  (source_hidden ? show_source : hide_source)();
+}
+
+toggle.onclick = toggle_source;
+
+hide_source();</script></div></div>
+        <hr/>
+        <pre> </pre>
+        <hr/>
+        <span>4146 - 8.36ms</span>
+    </body>
+</html>

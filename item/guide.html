@@ -1,0 +1,80 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" >
+<link rel="stylesheet" href=".&#x2F;../default-style.css"/>
+<link rel="stylesheet" href=".&#x2F;../style.css"/>
+
+
+        <title>[guide]</title>
+    </head>
+    <body>
+        <hr/>
+        <nav><a class="anchor" href=".&#x2F;../anchorage.html">[^^^]</a>
+</nav>
+        <hr/>
+        <h1 id="id-header"><pre>^[guide]</pre></h1>
+        <hr/>
+        <div id="main"><hr/><pre>Contents:<a class="anchor" href="./guide/table-of-contents.html">[guide/table-of-contents]</a>
+
+This is the first item
+Next:<a class="anchor" href="./guide/rhizome.html">[guide/rhizome]</a></pre><hr/><div style="font-family: sans-serif;"><h1>A Guide to Rhizome/Hormone</h1>
+<p>Rhizome is a programmable text-weaving tool.
+Hormone is the scripting language used to instruct Rhizome to process text.
+This guide provides a quick introduction to the Rhizome system,
+the Hormone language, and how some common tasks can be carried out.</p>
+<p>This guide is entirely typeset in Hormone.
+You can read the unprocessed text (source code) at the end of each file,
+or at by changing the 'item' in the URL to 'raw'
+(for example, <a class="anchor" href="./../raw/guide">&lt;[./../raw/guide]&gt;</a>).</p>
+<p>To begin, proceed to <a class="anchor" href="./guide/rhizome.html">[guide/rhizome]</a> for a brief overview of Rhizome.</p>
+<hr/><pre>Contents:<a class="anchor" href="./guide/table-of-contents.html">[guide/table-of-contents]</a>
+
+This is the first item
+Next:<a class="anchor" href="./guide/rhizome.html">[guide/rhizome]</a></pre><hr/><hr/><p>This document is generated using the 'document' typesetter  =><a class="anchor" href="./.^.html">[.^]</a></p><h3>Source</h3><button class="generic-button" id="doc-toggle" style="width: 5em;">Hide</button><pre id="doc-source" style="background: lightgreen;">
+#~ ~document
+
+\[title A Guide to Rhizome/Hormone]
+
+Rhizome is a programmable text-weaving tool.
+Hormone is the scripting language used to instruct Rhizome to process text.
+This guide provides a quick introduction to the Rhizome system,
+the Hormone language, and how some common tasks can be carried out.
+
+This guide is entirely typeset in Hormone.
+You can read the unprocessed text (source code) at the end of each file,
+or at by changing the 'item' in the URL to 'raw'
+(for example, \(/&gt; &quot;./../raw/guide&quot; ~page-extension)).
+
+To begin, proceed to \[guide/rhizome] for a brief overview of Rhizome.
+
+</pre><script>
+
+let source_hidden = false;
+let source = document.querySelector("#doc-source");
+let toggle = document.querySelector("#doc-toggle");
+
+function hide_source() {
+  source.style.display = "none";
+  toggle.innerHTML = "Show";
+  source_hidden = true;
+}
+
+function show_source () {
+  source.style.display = "block";
+  toggle.innerHTML = "Hide";
+  source_hidden = false;
+}
+
+function toggle_source() {
+  (source_hidden ? show_source : hide_source)();
+}
+
+toggle.onclick = toggle_source;
+
+hide_source();</script></div></div>
+        <hr/>
+        <pre> </pre>
+        <hr/>
+        <span>2393 - 4.64ms</span>
+    </body>
+</html>

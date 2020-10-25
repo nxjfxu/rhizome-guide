@@ -1,0 +1,290 @@
+#~ ~document
+
+\[title The Basics of Hormone]
+
+\[section Expressions]
+
+Whenever you write some text in Rhizome, you are writing it in Hormone:
+all text is interpreted as a piece of Hormone script before its is displayed.
+However, to hack into the fun part of Hormone,
+you need to first 'escape' regular text using the '\\\\' (backslash) symbol.
+The text that comes after a backslash are interpreted as Hormone \[emph expressions],
+which are Hormone code that can be evaluated to obtain a result.
+
+\[note In the code examples we omit the leading backslash for simplicity.
+       You need to write '\17' in the text
+       in order for it to be considered an expression.]
+
+The most basic expressions include \[emph integers] and \[emph strings].
+As shown below,
+an integer like '\\\\17 ' will be evaluated to \17 ,
+and a string like '\\\\"Hello"' to '\"Hello"'.
+Such simple expressions are called \[emph values].
+Values cannot be further evaluated, so they are returned as they are.
+
+\[~H 17]
+\(~H #"~"Hello~"")
+
+\[emph Applications] are more interesting expressions,
+where you take a functi                let a1 = to_int(args.remove(0))?;
+                let a2 = to_int(args.remove(0))?;
+on and apply it to some arguments.
+Inspired by Lisp, an applications in Hormone looks like
+'(function argument1 argument2 ...)'.
+For example, to compute the sum of numbers 1, 2, and 3,
+you apply the '+' operator to those numbers.
+The expression will look like '\\\\(+ 1 2 3)' in the text.
+
+\[~H (+ 1 2 3)]
+
+You can of course nest applications:
+
+\[~H (* (+ 1 2) (- 3 4))]
+
+In an applications all arguments, as well as the function,
+are expressions themselves.
+
+For convenience, you can use the square brackets '[]' to write an expression
+that applies some function to a string.
+The text before the first space in the square brackets
+will be the name of the function to apply,
+and everything after the first space is the content of the string
+which is the sole argument to that function.
+For example, '\\\\[function This is not a list of arguments.]'
+is equivalent to '\\\\(function "This is not a list of arguments.")'.
+
+When there are no spaces in an square bracket application,
+the function will be the 'link' function (written as '=>'),
+which creates an link to another text fragment.
+'\\\\[guide/hormone/basic]' will give you a link to this page,
+which is equivalent to '\\\\(=> "guide/hormone/basic")'.
+Both of them evaluate to this link: \[guide/hormone/basic]:
+
+\(~H #"[guide/hormone/basic]")
+\(~H #"(=> ~"guide/hormone/basic~")")
+
+
+\[section Definitions and Assignments]
+
+To \[emph define] something means to associate 
+a name with some value,
+so you can use the name to represent that value in the future.
+
+The following expression defines 'x' to be the sum of 1 and 2:
+
+\(~H #"(<- x (+ 2 4))") \(<- x (+ 2 4))
+
+The expression evaluates to \[emph void],
+which is why nothing is shown as its result.
+However, from now on, you can use the variable 'x' as an expression:
+
+\[~H x]
+
+\[~H (/ x 3)]
+
+If you try to use an undefined value, you get an error:
+
+\[~H (+ please-trust-me-I-am-defined 1)]
+
+You override a defined variable using a new definition, as below:
+
+\(~H #"(<- x (* 3 4))") \(<- x (* 3 4))
+
+\[~H x]
+
+\[section Function]
+
+You can put commonly-used operations into functions,
+so they can be reused.
+Functions in Hormone are \[emph first-class],
+which means they are expressions,
+and can be moved around and used like any other expression.
+
+To define a function that takes one argument named 'x',
+and return the sum of 'x' and one, you can write:
+
+\[~H (\(x) (+ x 1))]
+
+The expression evaluates to a \[emph procedure].
+The number '1' means that it takes one argument.
+Like integers and strings, functions are values.
+
+Because functions are expressions,
+you can place it in a bracket to apply it to some arguments:
+
+\[~H ((\(x) (+ x 1)) 2)]
+
+Of course, you can define a variable with a function as its value,
+and use the variable in function applications:
+
+\(~H #"(<- double (\(x) (* x 2)))") \(<- double (\(x) (* x 2)))
+
+\[~H (double 10)]
+
+You can of course define functions with more than one arguments:
+
+\(~H #"(<- f (\(x y z) (* x y (+ y z))))") \(<- f (\(x y z) (* x y (+ y z))))
+
+\[~H (f 1 2 (double 10))]
+
+
+\[section Condition]
+
+You can use the '?' ('If') operator to evaluate selectively.
+'?' is a special operator that takes three arguments.
+The first is a condition, which will always be evaluated.
+If the condition evaluates to anything that is not 'false',
+then the second argument will be evaluated.
+If the condition evaluates to false, the third will be evaluated.
+
+\(~H #"(? (> 1 0) 10 20)")
+
+\(~H #"(? (< (+ 1 1) 0) 10 20)")
+
+\[note Like certain Lisp dialects, in Hormone,
+       everything that is not 'false' is considered 'true' as a condition.]
+
+\(~H #"(? 1 2 3)")
+
+
+\[section Recursion]
+
+Functions in Hormone can be recursive:
+
+\(~H #"
+(<- fib
+ (\(x)
+  (? (<= x 0)
+     0
+     (? (= x 1)
+        1
+        (+ (fib (- x 1)) (fib (- x 2)))))))")
+\(<- fib
+ (\(x)
+  (? (<= x 0)
+     0
+     (? (= x 1)
+        1
+        (+ (fib (- x 1)) (fib (- x 2)))))))
+
+\[~H (fib 1)]
+
+\[~H (fib 10)]
+
+Or mutually recursive:
+
+\(<- -- (\(x) (? (= x #-) #+ #-)))
+\(~H #"
+(<- even? (\(x) (? (= x 0) #+ (odd?  ((? (< x 0) + -) x 1)))))
+(<- odd?  (\(x) (? (= x 0) #- (even? ((? (< x 0) + -) x 1)))))")
+\(<- even? (\(x) (? (= x 0) #+ (odd? ((? (< x 0) + -) x 1)))))
+\(<- odd? (\(x) (? (= x 0) #- (even? ((? (< x 0) + -) x 1)))))
+
+\(~H #"(even? 10)")
+\(~H #"(odd? 10)")
+\(~H #"(odd? -11)")
+
+\[note To account for negative numbers, the two functions use an '?' expression
+       to determine what function to use when calculating the argument
+       to the recursive call.
+       This is possible because conditionals are expressions.]
+
+To improve performance, Hormone implements proper tail recursion.
+A side effect of this is that
+you can write recursive functions that will evaluate forever:
+
+\(~H #"(<- forever (\(x) (forever x)))")
+
+To avoid never-ending evaluation,
+Rhizome puts a limit on how much time a Hormone evaluation can take.
+If the evaluation takes too long, it will fail,
+and an error message will be displayed, like in: \[example/forever].
+
+
+\[label sequence]
+\[section Sequence]
+
+In Hormone, the '>>' (do) operator
+can be used to chain a sequence of expressions together.
+The value of the last expression in the sequence
+will be the value of the entire expression:
+
+\(~H #"(>> 1 2 3 (* 2 2) (+ 2 3))")
+
+Assignments made earlier in a sequence can be used later:
+
+\(~H #"
+(>>
+ (<- x 1)
+ (<- y 2)
+ (+ x y))")
+
+
+\[section Strings]
+
+\[subsection String Conversion]
+
+To turn things that are not strings into strings,
+you can use the '>~<' operator:
+
+\[~H 10]
+
+\[~H +]
+
+\(~H #"(\(x) (+ x 1))")
+
+\[note Those may look the same as they previously are.
+       This is because when they are shown on the webpage,
+       they are converted to string automatically.]
+
+\[subsection String Concatenation]
+
+You can also use '>~<' to 'join' somethings together into a string.
+If an argument to '>~<' is not a string,
+it will be converted automatically:
+
+\(~H #"(>~~< ~"The result is: ~" (+ 1 2 3) ~"!~")")
+
+
+\[label typesetter]
+\[subsection The Typesetter]
+
+The '~~~' (typesetter) function is almost identical to '>~<',
+\[emph except] it 'typesets' objects by calling its typesetter method
+(see \[guide/hormone/data#typesetter]).
+
+'~~~' is mostly used as the 'reader'
+(see \[guide/hormone/reader]) of Hormone scripts.
+Generally, you should use '>~<' instead to work with strings.
+
+
+\[subsection Escape Character]
+
+Inside a string, the '~' (tilde) symbol is used to 'escape' some characters,
+so that special characters that are hard to include in the string otherwise
+can be represented.
+The escape rules are:
+
+\(itemize
+[item ~ followed by '<': a newline character.]
+[item ~ followed by '"': a '"' (double quote) character.]
+[item ~ followed by '~': a '~' (tilde) character.]
+)
+
+\[subsection String Sanitation]
+
+Since Rhizome outputs to HTML,
+strings in Hormone are \[emph sanitized]
+so that certain characters does not break HTML.
+In some cases this is not desired, for example,
+if you write '\\\\"<h5>A small title</h5>"', expecting it to be an HTML title,
+you will instead get:
+
+\"<h5>A small title</h5>"
+
+If you want strings to remain unsanitized,
+put a '#' (hash) symbol in front of the opening quotation mark,
+like this: '\\\\#"<h5>A small title</h5>"',
+which will become:
+
+\#"<h5>A small title</h5>"

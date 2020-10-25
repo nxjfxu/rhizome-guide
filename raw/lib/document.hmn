@@ -1,0 +1,32 @@
+#!
+
+(<- ~document (\es
+ (>~<
+  (-> [<~ guide/table-of-contents] ~nav)
+  #"<div style=~"font-family: sans-serif;~">"
+  (>~< (~markdown (.> ~~~ es))
+       (-> [<~ guide/table-of-contents] ~nav)
+       #"<hr/>"
+       #"<p>This document is generated using the '~document' typesetter  =>"
+       (=> ".^")
+       #"</p>"
+       #"<h3>Source</h3>"
+       #"<button class=~"generic-button~" id=~"doc-toggle~" style=~"width: 5em;~">Hide</button>"
+       #"<pre id=~"doc-source~" style=~"background: lightgreen;~">~<"
+       (<~~ ~.)
+       #"~<</pre>"
+       #"<script>" [<~ lib/document/script] #"</script>"
+       )
+  #"</div>"
+ )
+))
+
+\(<- ~H (\(c)
+ (>~< #"<div class=~"H~">"
+      #"<pre class=~"H-code~"><span class=~"H-title~">Code</span>" c #"</pre>"
+      #"<span class=~"H-title~">Result</span>"
+      #"<div>" (~~~ (~>> c)) #"</div>"
+      #"</div>")
+))
+
+(~> ~document ~H)

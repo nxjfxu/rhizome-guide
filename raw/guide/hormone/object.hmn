@@ -1,0 +1,52 @@
+#~ ~document
+
+\[title Object-Oriented Programming in Hormone]
+
+Hormone supports \[emph prototype]-based object-oriented programming.
+Recall that in the previous chapter,
+we mentioned that an object contains, in addition to its attributes,
+also its \[emph prototype].
+The prototype is an object that contains some 'default' attributes values.
+This is useful when you want to have many objects sharing the same set of methods.
+
+This is the definition of the prototype for a person:
+
+\(~H #"
+(<- %person (>+< . (greet (\(s) (>~~< ~"Hello, ~" (>+ s name) ~"!~")))))
+%person") \(<- %person (>+< . (greet (\(s) (>~< "Hello, " (>+ s name) "!")))))
+
+\[note The name of this object starts with '%' (percent sign),
+       to indicate that it is intended to be used as a prototype.]
+
+Notice that the 'name' attribute of the object '%person' is not defined.
+This is because these attribute values are supposed to be provided
+by objects using '%person' as their prototypes.
+
+You can then define objects that uses the 'person' prototype:
+
+\(~H #"
+(<- gilles (>+< %person (name ~"Gilles~")))
+(<- felix (>+< %person (name ~"Felix~")))")
+\(<- gilles (>+< %person (name "Gilles")))
+\(<- felix (>+< %person (name "Felix")))
+
+\(~H #"(-> gilles greet)")
+\(~H #"(-> felix greet)")
+
+If an attribute (or method) does not exist in an object,
+then when you try to use that attribute or method,
+Hormone will try to find it in the object's prototype if it exists,
+or fail if it does not.
+
+\(~H #"(-> gilles bye)")
+
+You can override the attributes of a prototype by defining attributes
+with the same name:
+
+\(~H #"
+(!+< gilles (greet (\(s) (>~~< ~"Hi, ~" (>+ s name) ~"!!!~"))))
+(-> gilles greet)")
+
+If the second argument to the '>+<'
+function is '.' (empty list), then it creates an object with no prototype.
+

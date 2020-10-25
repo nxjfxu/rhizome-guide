@@ -1,0 +1,119 @@
+#~ ~document
+
+\[title Hormone]
+
+\[emph Hormone] is the scripting language Rhizome uses for processing text fragment.
+Every time a Rhizome fragment is accessed,
+its textual content is executed as a Hormone script,
+and the execution result is displayed on the webpage.
+
+For a guide to the basics of Hormone, proceed to \[guide/hormone/basic].
+
+
+\[section A Quick Glance at Hormone]
+
+In text fragments, Hormone scripts start with a '\\\\', the backslash symbol.
+This tells the Hormone interpreter to evaluate the content after the backslash
+as a Hormone expression, rather than regular text.
+For example, if you write '\\\\(+ 1 1)' in your text,
+it will be treated as a mathematical operation rather than text,
+and will look like '\(+ 1 1)'.
+
+\[note Go to the source of this page and see what that '2'
+       above actually is.]
+
+One of the most important use of Hormone is to create links.
+For example, writing in your text \\\\[link-target]
+creates a link to a fragment named 'link-target',
+like this: \[link-target].
+This allows text fragments to be weaved into \[emph hypertext].
+
+You can also use Hormone script to format your text.
+For example, \\\\[emph italic] makes text \[emph italic].
+
+However, Hormone can do much more than that.
+As an object-oriented language, you can represent various 'items'
+as objects, and reuse them efficiently across multiple text fragments.
+
+For example, you can define an object prototype
+for books (see \[example/book]),
+and define the book 'A Thousand Plateaus'
+as an object (see \[example/a-thousand-plateaus]).
+You can then reference the book by 'requiring' the book object,
+by writing \\\\[<~ example/a-thousand-plateaus].
+The result would look like:
+
+\[<~ example/a-thousand-plateaus]
+
+This is how this book, as an object, is shown when it appears in text.
+However, you can also render it in a short way:
+
+\(-> [<~ example/a-thousand-plateaus] ~inline)
+
+Or even extract a bibtex entry from it:
+
+\(-> [<~ example/a-thousand-plateaus] ~bibtex)
+
+There are, of course, many more ways to use Hormone in your text.
+You may have noticed the navigation bar at the top and bottom
+of each guide page, with links to the previous and next guide page.
+That is also an object!
+The navigation bar changes its form according the guide page it is in.
+You can find its definition in \[guide/table-of-contents].
+(The table of contents itself is an object.)
+
+In Rhizome, text flow freely across fragments.
+With Hormone, text is always in a state of flux,
+always undergoing changes, never complete.
+This is Rhizome/Hormone's philosophy.
+
+For a guide to the basics of Hormone, proceed to \[guide/hormone/basic].
+
+
+\[section Example Hormone Scripts]
+
+To find the sum of some numbers:
+
+\[~H (+ 1 2 3 100)]
+
+To use variables:
+\(~H #"
+(<- x 10)
+(<- y 20)
+(<- z (+ x y))
+
+(+ z 1)")
+
+To define and use a function:
+
+\(~H #"
+(<- double (\(x) (* x 2)))
+(double 4)")
+
+To put some numbers into a list:
+
+\[~H (list 1 2 3 100)]
+
+To add one to all numbers in a list, functionally:
+
+\[~H (map (\(x) (+ x 1)) (list 1 2 3 100))]
+
+To create and use objects:
+\(~H #"
+(<- person (>+< . (hello (\(s) (>~~< ~"Hello, ~" (>+ s name) ~"!~") )) ))
+
+(<- gilles (>+< person (name ~"Gilles~")))
+
+(-> gilles hello)")
+
+To create one of the above blocks:
+\(~H #"(~~H ~"(+ 1 2 3 100)~")" )
+
+
+\[section Execution Time]
+
+At the bottom of each page, there are two numbers.
+The first is the number of 'cycles' it took
+for the Hormone interpreter to finish executing the script.
+The second is the time, in milliseconds, it took.
+

@@ -1,0 +1,15 @@
+#~ ~document
+
+\[title A Guide to Rhizome/Hormone]
+
+Rhizome is a programmable text-weaving tool.
+Hormone is the scripting language used to instruct Rhizome to process text.
+This guide provides a quick introduction to the Rhizome system,
+the Hormone language, and how some common tasks can be carried out.
+
+This guide is entirely typeset in Hormone.
+You can read the unprocessed text (source code) at the end of each file,
+or at by changing the 'item' in the URL to 'raw'
+(for example, \(/> "./../raw/guide" ~page-extension)).
+
+To begin, proceed to \[guide/rhizome] for a brief overview of Rhizome.

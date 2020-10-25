@@ -1,0 +1,29 @@
+#!
+
+(<- list (\es es))
+(<- map (\(f l) (? (.? l) () (>< (f (<>< l)) (map f (><> l))))))
+(<- foldl (\(f a l) (? (.? l) a (foldl f (f a (<>< l)) (><> l)))))
+
+(<- assoc (\(v l)
+ (? (.? l)
+    ()
+    (? (= (<>< (<>< l)) v)
+       (<>< l)
+       (assoc v (><> l))))
+))
+
+(<- join (\(l sep)
+ (? (.? l)
+    ""
+    (foldl (\(a s) (~~~ a sep s)) (<>< l) (><> l)))))
+
+(<- ++ (\(l1 l2) (? (.? l1) l2 (>< (<>< l1) (++ (><> l1) l2)))))
+(<- append ++)
+
+(<- drop-until (\(f l)
+ (? (.? l) l (<-- (h (<>< l)) (t (><> l)) (? (f h) l (drop-until f t))))))
+
+
+(~> list map foldl assoc ++ append drop-until)
+
+(~> join)

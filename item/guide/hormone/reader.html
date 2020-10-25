@@ -1,0 +1,177 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" >
+<link rel="stylesheet" href=".&#x2F;..&#x2F;..&#x2F;../default-style.css"/>
+<link rel="stylesheet" href=".&#x2F;..&#x2F;..&#x2F;../style.css"/>
+
+
+        <title>[guide&#x2F;hormone&#x2F;reader]</title>
+    </head>
+    <body>
+        <hr/>
+        <nav><a class="anchor" href=".&#x2F;..&#x2F;..&#x2F;../anchorage.html">[^^^]</a>
+</nav>
+        <hr/>
+        <h1 id="id-header"><pre> [guide&#x2F;hormone&#x2F;reader]</pre></h1>
+        <hr/>
+        <div id="main"><hr/><pre>Contents:<a class="anchor" href="./../../guide/table-of-contents.html">[guide/table-of-contents]</a>
+
+Prev:<a class="anchor" href="./../../guide/hormone/object.html">[guide/hormone/object]</a>
+Next:<a class="anchor" href="./../../guide/hormone/special.html">[guide/hormone/special]</a></pre><hr/><div style="font-family: sans-serif;"><h1>Hormone Reader</h1>
+<p>When a text fragment is processes as a Hormone script,
+Hormone does the following two things:</p>
+<ul>
+<li>Determine if the script is in <em>text mode</em> or in <em>code mode</em>.</li>
+<li>Determine which <em>reader</em> to use for the script.</li>
+</ul>
+<p>Hormone has two parsing modes: text mode and code mode.
+In text mode, contents of the script are treated as text strings,
+and an expression must come after a '\' (backslash).
+In code mode, the content of the script is treated as a series of expressions.
+No '\'s are needed, and strings must be put into double quotes.</p>
+<p>Hormone chooses the reader based on the first line of a Hormone program.
+It follows the following rules:</p>
+<ul>
+<li>If the first line starts with '#~',
+the text is in text mode, and the what comes after '#~'
+is the name of the reader.
+If no reader is specified, then by default '~~~' (typeset) will be the reader.</li>
+<li>If the first line starts with '#!',
+the text is in text mode, and the what comes after '#!'
+is the name of the reader.
+If no reader is specified, then by default '&gt;&gt;' (do) will be the reader.</li>
+<li>If the first line does not start with either '#~' or '#!',
+the text is in text mode, and the default reader '~~~' will be used.</li>
+</ul>
+<div class="note"><span class="block-title note-title">Note</span><span>The 'reader name' must be the name of a function
+       'provided' by the prelude.</span></div>
+<p>The reader will be 'applied'
+to contents of the file just like a regular function application.</p>
+<ul>
+<li>If the script is in text mode,
+then the text will become strings as arguments,
+and the Hormone expressions within the text become arguments as they are.</li>
+<li>If the script is in code mode, the expressions in the body
+will become the arguments.</li>
+</ul>
+<p>Here are some examples:</p>
+<ul>
+<li><a class="anchor" href="./../../example/reader/text.html">[example/reader/text]</a> is a piece of text, evaluated using the text reader.</li>
+<li><a class="anchor" href="./../../example/reader/markdown.html">[example/reader/markdown]</a> is also a piece of text, evaluated using the 'markdown' function.  (see: <a class="anchor" href="./../../guide/hormone/special.html#markdown">[guide/hormone/special#markdown]</a>.)</li>
+<li><a class="anchor" href="./../../example/reader/addition.html">[example/reader/addition]</a> is a script in code mode,
+that uses '+' (add) as the reader.</li>
+<li><a class="anchor" href="./../../example/reader/sequence.html">[example/reader/sequence]</a> is a script in code mode,
+that uses the default '&gt;&gt;' (do) reader.</li>
+<li>This fragment, and all other fragments in this guide,
+uses the 'document' reader in text mode.
+You can find the definition of 'document' at <a class="anchor" href="./../../lib/document.html">[lib/document]</a>.</li>
+</ul>
+<hr/><pre>Contents:<a class="anchor" href="./../../guide/table-of-contents.html">[guide/table-of-contents]</a>
+
+Prev:<a class="anchor" href="./../../guide/hormone/object.html">[guide/hormone/object]</a>
+Next:<a class="anchor" href="./../../guide/hormone/special.html">[guide/hormone/special]</a></pre><hr/><hr/><p>This document is generated using the 'document' typesetter  =><a class="anchor" href="./../../.^.html">[.^]</a></p><h3>Source</h3><button class="generic-button" id="doc-toggle" style="width: 5em;">Hide</button><pre id="doc-source" style="background: lightgreen;">
+#~ ~document
+
+\[title Hormone Reader]
+
+When a text fragment is processes as a Hormone script,
+Hormone does the following two things:
+
+\(itemize
+(item (&gt;~&lt; &quot;Determine if the script is in &quot; [emph text mode]
+            &quot; or in &quot; [emph code mode] &quot;.&quot;))
+(item (&gt;~&lt; &quot;Determine which &quot; [emph reader] &quot; to use for the script.&quot;))
+)
+
+Hormone has two parsing modes: text mode and code mode.
+In text mode, contents of the script are treated as text strings,
+and an expression must come after a '\\\\' (backslash).
+In code mode, the content of the script is treated as a series of expressions.
+No '\\\\'s are needed, and strings must be put into double quotes.
+
+Hormone chooses the reader based on the first line of a Hormone program.
+It follows the following rules:
+
+\(itemize
+[item If the first line starts with '#~',
+      the text is in text mode, and the what comes after '#~'
+      is the name of the reader.
+      If no reader is specified, then by default '~~~' (typeset) will be the reader.]
+
+[item If the first line starts with '#!',
+      the text is in text mode, and the what comes after '#!'
+      is the name of the reader.
+      If no reader is specified, then by default '&gt;&gt;' (do) will be the reader.]
+
+[item If the first line does not start with either '#~' or '#!',
+      the text is in text mode, and the default reader '~~~' will be used.]
+)
+
+\[note The 'reader name' must be the name of a function
+       'provided' by the prelude.]
+
+The reader will be 'applied'
+to contents of the file just like a regular function application.
+
+\(itemize
+[item If the script is in text mode,
+      then the text will become strings as arguments,
+      and the Hormone expressions within the text become arguments as they are.]
+
+[item If the script is in code mode, the expressions in the body
+      will become the arguments.]
+)
+
+Here are some examples:
+
+\(itemize
+(item (&gt;~&lt; [example/reader/text] &quot; is a piece of text, evaluated using the text reader.&quot;))
+(item (&gt;~&lt; [example/reader/markdown]
+           &quot; is also a piece of text, evaluated using the '~markdown' function.&quot;
+           &quot;  (see: &quot; [guide/hormone/special#markdown] &quot;.)&quot;
+))
+
+(item (&gt;~&lt; [example/reader/addition] &quot; is a script in code mode,
+           that uses '+' (add) as the reader.&quot;))
+(item (&gt;~&lt; [example/reader/sequence] &quot; is a script in code mode,
+           that uses the default '&gt;&gt;' (do) reader.&quot;))
+
+(item (&gt;~&lt; &quot;This fragment, and all other fragments in this guide,
+            uses the '~document' reader in text mode.
+            You can find the definition of '~document' at &quot;
+            [lib/document]
+            &quot;.&quot;))
+)
+
+
+</pre><script>
+
+let source_hidden = false;
+let source = document.querySelector("#doc-source");
+let toggle = document.querySelector("#doc-toggle");
+
+function hide_source() {
+  source.style.display = "none";
+  toggle.innerHTML = "Show";
+  source_hidden = true;
+}
+
+function show_source () {
+  source.style.display = "block";
+  toggle.innerHTML = "Hide";
+  source_hidden = false;
+}
+
+function toggle_source() {
+  (source_hidden ? show_source : hide_source)();
+}
+
+toggle.onclick = toggle_source;
+
+hide_source();</script></div></div>
+        <hr/>
+        <pre> </pre>
+        <hr/>
+        <span>4012 - 7.73ms</span>
+    </body>
+</html>

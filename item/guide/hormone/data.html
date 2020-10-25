@@ -1,0 +1,398 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" >
+<link rel="stylesheet" href=".&#x2F;..&#x2F;..&#x2F;../default-style.css"/>
+<link rel="stylesheet" href=".&#x2F;..&#x2F;..&#x2F;../style.css"/>
+
+
+        <title>[guide&#x2F;hormone&#x2F;data]</title>
+    </head>
+    <body>
+        <hr/>
+        <nav><a class="anchor" href=".&#x2F;..&#x2F;..&#x2F;../anchorage.html">[^^^]</a>
+</nav>
+        <hr/>
+        <h1 id="id-header"><pre> [guide&#x2F;hormone&#x2F;data]</pre></h1>
+        <hr/>
+        <div id="main"><hr/><pre>Contents:<a class="anchor" href="./../../guide/table-of-contents.html">[guide/table-of-contents]</a>
+
+Prev:<a class="anchor" href="./../../guide/hormone/intertextuality.html">[guide/hormone/intertextuality]</a>
+Next:<a class="anchor" href="./../../guide/hormone/object.html">[guide/hormone/object]</a></pre><hr/><div style="font-family: sans-serif;"><h1>Data Structures in Hormone</h1>
+<h2>Pair</h2>
+<p>In Hormone, you can use the '&gt;&lt;' (cons) function
+to put two values together into a pair:</p>
+<div class="H"><pre class="H-code"><span class="H-title">Code</span>(>< 1 "hello")</pre><span class="H-title">Result</span><div>'(1 . hello)</div></div>
+<div class="H"><pre class="H-code"><span class="H-title">Code</span>
+(<- p (>< (>< #+ 2) (>< 3 "b")))
+p</pre><span class="H-title">Result</span><div>'('(#+ . 2) . '(3 . b))</div></div> 
+<p>To get the first element in a pair, you can use the '&lt;&gt;&lt;' (car) function.
+To get the second, you can use '&gt;&lt;&gt;' (cdr):</p>
+<div class="H"><pre class="H-code"><span class="H-title">Code</span>(<>< (>< 1 2))</pre><span class="H-title">Result</span><div>1</div></div>
+<div class="H"><pre class="H-code"><span class="H-title">Code</span>(><> (>< 1 2))</pre><span class="H-title">Result</span><div>2</div></div>
+<div class="H"><pre class="H-code"><span class="H-title">Code</span>(* (><> (<>< p)) (<>< (><> p)))</pre><span class="H-title">Result</span><div>6</div></div>
+<h2>List</h2>
+<p>In Hormone, a list is either</p>
+<ul>
+<li>An empty list, written as either '.' or '()'</li>
+<li>A pair, whose second element is a list</li>
+</ul>
+<p>For example, this is a list:</p>
+<div class="H"><pre class="H-code"><span class="H-title">Code</span>(>< 1 (>< 2 (>< 3 ())))</pre><span class="H-title">Result</span><div>'(1 2 3)</div></div>
+<p>An empty list, to be precise.</p>
+<p>This is also a list:</p>
+<div class="H"><pre class="H-code"><span class="H-title">Code</span>()</pre><span class="H-title">Result</span><div>.</div></div>
+<p>But this is not a list:</p>
+<div class="H"><pre class="H-code"><span class="H-title">Code</span>(>< 1 (>< 2 (>< 3 4)))</pre><span class="H-title">Result</span><div>'(1 . '(2 . '(3 . 4)))</div></div>
+<p>Since lists are essentially pairs with special structures,
+you can use the two pair functions to access elements of a list:</p>
+<div class="H"><pre class="H-code"><span class="H-title">Code</span>
+(<- l (>< 1 (>< "a" (>< 3 ()))))
+(+ (<>< l) (<>< (><> (><> l))))</pre><span class="H-title">Result</span><div>4</div></div>
+<h2>Object</h2>
+<p>You can use <em>objects</em> to more efficiently organize information.
+In a Hormone object, there are</p>
+<ul>
+<li>A table of <em>attributes</em> that maps names to values</li>
+<li>The 'prototype' of this object.  We will discuss this in the next chapter.</li>
+</ul>
+<p>In the following example,
+we create an object with two attributes:
+'x' with value '10', and 'y' with value '20':</p>
+<div class="H"><pre class="H-code"><span class="H-title">Code</span>(>+< . (x 10) (y (+ 10 10)))</pre><span class="H-title">Result</span><div>{
+  :x 10
+  :y 20
+}</div></div>
+<p>When creating an object, the values of the attributes will be evaluated,
+before they are put into the objects.</p>
+<p>To access the value of the attributes, you can use the '&gt;+' (access) function:</p>
+<div class="H"><pre class="H-code"><span class="H-title">Code</span>
+(<- point (>+< . (x 10) (y (+ 10 10))))
+(>+ point y)</pre><span class="H-title">Result</span><div>20</div></div> 
+<p>To check if an object has a certain attribute,
+you can use the '&gt;+?' (has-attribute) function,
+which returns #-  if the attribute does not exist,
+and returns the attribute's value if it exists.</p>
+<div class="H"><pre class="H-code"><span class="H-title">Code</span>(>+? point z)</pre><span class="H-title">Result</span><div>#-</div></div>
+<div class="H"><pre class="H-code"><span class="H-title">Code</span>(>+? point x)</pre><span class="H-title">Result</span><div>10</div></div>
+<div class="note"><span class="block-title note-title">Note</span><span>Remember that any non-false value is treated as 'true'
+       by the '?' (if) function.</span></div> 
+<p>You can use the '+&lt;' (mitosis) function to create a (shallow)
+copy of an existing object, possibly updating its attributes
+or add new attributes as you do so:</p>
+<div class="H"><pre class="H-code"><span class="H-title">Code</span>
+(<- point2 (+< point (z 1)))
+(<- point3 (+< point (y (* (>+ point2 x) 3))))
+<p>(&gt;&lt; (&gt;+ point2 z) (&gt;&lt; (&gt;+ point3 y) (&gt;&lt; (&gt;+ point3 x) ())))</pre><span class="H-title">Result</span><div>'(1 30 10)</div></div></p>
+<div class="note"><span class="block-title note-title">Note</span><span>The attributes in the original object are not changed by mitosis.</span></div>
+<div class="H"><pre class="H-code"><span class="H-title">Code</span>point</pre><span class="H-title">Result</span><div>{
+  :x 10
+  :y 20
+}</div></div>
+<p>You can use the '!+&lt;' (update) function to update attributes
+of an existing object in-situ:</p>
+<div class="H"><pre class="H-code"><span class="H-title">Code</span>
+(!+< point2 (z 2) (x 1))
+point2</pre><span class="H-title">Result</span><div>{
+  :x 1
+  :y 20
+  :z 2
+}</div></div>
+<h3>Method Calls</h3>
+<p>Because functions are values, object attributes can be functions.
+Often, you can write down operations regarding an object
+as functions that takes the object as its first argument,
+and store such functions as the attribute of the object.
+Such attributes are called <em>methods</em>.</p>
+<p>To call a method, you can use the '-&gt;' (call) function:</p>
+<div class="H"><pre class="H-code"><span class="H-title">Code</span>
+(<- p (>+< . (sum (\(s) (+ (>+ s x) (>+ s y))))
+             (set-x! (\(s new-x) (!+< s (x new-x))))
+             (x 1)
+             (y 2)))
+(-> p set-x! 10)
+(-> p sum)</pre><span class="H-title">Result</span><div>12</div></div>
+<p>The first argument to '-&gt;' should be the object.
+The second should be the method's name.
+After that, you can have any number of arguments.</p>
+<div class="note"><span class="block-title note-title">Note</span><span>A method call '(-&gt; o f a b c)'
+       is similar to '((&gt;+ o f) o a b c)',
+       except in the second expression the object 'o' is evaluated twice,
+       while in the method call it is only evaluated once.</span></div>
+<a id="typesetter"/>
+<h3>The '~' Method</h3>
+<p>When Hormone tries to typeset an object with the '~~~' (typesetter) function
+(see <a class="anchor" href="./../../guide/hormone/basic.html#typesetter">[guide/hormone/basic#typesetter]</a>),
+it will first try to call a method with the name '~',
+which we call the <em>typesetter method</em>,
+which should be a method that returns a string.</p>
+<p>If the typesetter exists in an object,
+then the value returned by method-calling the typesetter
+will be the string value of this object.
+Otherwise, Hormone falls back to the default representation.</p>
+<div class="H"><pre class="H-code"><span class="H-title">Code</span>
+(<- o (>+< . (x 1)))
+<p>(&lt;- o-with-typesetter
+(&gt;+&lt; . (x 1) (~ ((s) (&gt;
+&quot;[x = &quot; (&gt;+ s x) &quot;]&quot;)))))</pre><span class="H-title">Result</span><div></div></div></p>
+<div class="H"><pre class="H-code"><span class="H-title">Code</span>o</pre><span class="H-title">Result</span><div>{
+  :x 1
+}</div></div>
+<div class="H"><pre class="H-code"><span class="H-title">Code</span>o-with-typesetter</pre><span class="H-title">Result</span><div>[x = 1]</div></div>
+<h3>Objects as References</h3>
+<p>Like in languages such as Java and Python, objects are passed <em>by reference</em>.
+This means if you assign an object to multiple variables,
+all those variables will have the same reference that points to the same object.
+If any one of those references is 'updated' using '!+&lt;',
+the change will be seen by all of them:</p>
+<div class="H"><pre class="H-code"><span class="H-title">Code</span>
+(<- o (>+< . (x 1)))
+(<- o1 o)
+(!+< o1 (x 2))
+o</pre><span class="H-title">Result</span><div>{
+  :x 2
+}</div></div>   
+<div class="H"><pre class="H-code"><span class="H-title">Code</span>
+(!+< o1 (y 3))
+(<- o2 o)
+o2</pre><span class="H-title">Result</span><div>{
+  :x 2
+  :y 3
+}</div></div>
+<p>This means if you need a copy of an object that is not a mere reference
+to an existing object, you need to use '+&lt;' (mitosis).
+This also means if you need a mutable reference
+that can live across fragments, you can use an object.</p>
+<hr/><pre>Contents:<a class="anchor" href="./../../guide/table-of-contents.html">[guide/table-of-contents]</a>
+
+Prev:<a class="anchor" href="./../../guide/hormone/intertextuality.html">[guide/hormone/intertextuality]</a>
+Next:<a class="anchor" href="./../../guide/hormone/object.html">[guide/hormone/object]</a></pre><hr/><hr/><p>This document is generated using the 'document' typesetter  =><a class="anchor" href="./../../.^.html">[.^]</a></p><h3>Source</h3><button class="generic-button" id="doc-toggle" style="width: 5em;">Hide</button><pre id="doc-source" style="background: lightgreen;">
+#~ ~document
+
+\[title Data Structures in Hormone]
+
+\[section Pair]
+
+In Hormone, you can use the '&gt;&lt;' (cons) function
+to put two values together into a pair:
+
+\(~H #&quot;(&gt;&lt; 1 ~&quot;hello~&quot;)&quot;)
+
+\(~H #&quot;
+(&lt;- p (&gt;&lt; (&gt;&lt; #+ 2) (&gt;&lt; 3 ~&quot;b~&quot;)))
+p&quot;) \(&lt;- p (&gt;&lt; (&gt;&lt; #+ 2) (&gt;&lt; 3 &quot;b&quot;)))
+
+To get the first element in a pair, you can use the '&lt;&gt;&lt;' (car) function.
+To get the second, you can use '&gt;&lt;&gt;' (cdr):
+
+\(~H #&quot;(&lt;&gt;&lt; (&gt;&lt; 1 2))&quot;)
+
+\(~H #&quot;(&gt;&lt;&gt; (&gt;&lt; 1 2))&quot;)
+
+\(~H #&quot;(* (&gt;&lt;&gt; (&lt;&gt;&lt; p)) (&lt;&gt;&lt; (&gt;&lt;&gt; p)))&quot;)
+
+
+\[section List]
+
+In Hormone, a list is either
+
+\(itemize
+[item An empty list, written as either '.' or '()']
+[item A pair, whose second element is a list]
+)
+
+For example, this is a list:
+
+\(~H #&quot;(&gt;&lt; 1 (&gt;&lt; 2 (&gt;&lt; 3 ())))&quot;)
+
+An empty list, to be precise.
+
+This is also a list:
+
+\[~H ()]
+
+But this is not a list:
+
+\(~H #&quot;(&gt;&lt; 1 (&gt;&lt; 2 (&gt;&lt; 3 4)))&quot;)
+
+Since lists are essentially pairs with special structures,
+you can use the two pair functions to access elements of a list:
+
+\(~H #&quot;
+(&lt;- l (&gt;&lt; 1 (&gt;&lt; ~&quot;a~&quot; (&gt;&lt; 3 ()))))
+(+ (&lt;&gt;&lt; l) (&lt;&gt;&lt; (&gt;&lt;&gt; (&gt;&lt;&gt; l))))&quot;)
+
+
+\[section Object]
+
+You can use \[emph objects] to more efficiently organize information.
+In a Hormone object, there are
+
+\(itemize
+ (item (&gt;~&lt; &quot;A table of &quot; [emph attributes] &quot; that maps names to values&quot;))
+ [item The 'prototype' of this object.  We will discuss this in the next chapter.]
+)
+
+In the following example,
+we create an object with two attributes:
+'x' with value '10', and 'y' with value '\(+ 10 10)':
+
+\(~H #&quot;(&gt;+&lt; . (x 10) (y (+ 10 10)))&quot;)
+
+When creating an object, the values of the attributes will be evaluated,
+before they are put into the objects.
+
+To access the value of the attributes, you can use the '&gt;+' (access) function:
+
+\(~H #&quot;
+(&lt;- point (&gt;+&lt; . (x 10) (y (+ 10 10))))
+(&gt;+ point y)&quot;) \(&lt;- point (&gt;+&lt; . (x 10) (y (+ 10 10))))
+
+To check if an object has a certain attribute,
+you can use the '&gt;+?' (has-attribute) function,
+which returns \#-  if the attribute does not exist,
+and returns the attribute's value if it exists.
+
+\(~H #&quot;(&gt;+? point z)&quot;)
+\(~H #&quot;(&gt;+? point x)&quot;)
+
+\[note Remember that any non-false value is treated as 'true'
+       by the '?' (if) function.] 
+
+You can use the '+&lt;' (mitosis) function to create a (shallow)
+copy of an existing object, possibly updating its attributes
+or add new attributes as you do so:
+
+\(~H #&quot;
+(&lt;- point2 (+&lt; point (z 1)))
+(&lt;- point3 (+&lt; point (y (* (&gt;+ point2 x) 3))))
+
+(&gt;&lt; (&gt;+ point2 z) (&gt;&lt; (&gt;+ point3 y) (&gt;&lt; (&gt;+ point3 x) ())))&quot;)
+\(&lt;- point2 (+&lt; point (z 1)))
+
+\[note The attributes in the original object are not changed by mitosis.]
+
+\[~H point]
+
+You can use the '!+&lt;' (update) function to update attributes
+of an existing object in-situ:
+
+\(~H #&quot;
+(!+&lt; point2 (z 2) (x 1))
+point2&quot;)
+
+
+\[subsection Method Calls]
+
+Because functions are values, object attributes can be functions.
+Often, you can write down operations regarding an object
+as functions that takes the object as its first argument,
+and store such functions as the attribute of the object.
+Such attributes are called \[emph methods].
+
+To call a method, you can use the '-&gt;' (call) function:
+
+\(~H #&quot;
+(&lt;- p (&gt;+&lt; . (sum (\(s) (+ (&gt;+ s x) (&gt;+ s y))))
+             (set-x! (\(s new-x) (!+&lt; s (x new-x))))
+             (x 1)
+             (y 2)))
+(-&gt; p set-x! 10)
+(-&gt; p sum)&quot;)
+
+The first argument to '-&gt;' should be the object.
+The second should be the method's name.
+After that, you can have any number of arguments.
+
+\[note A method call '(-&gt; o f a b c)'
+       is similar to '((&gt;+ o f) o a b c)',
+       except in the second expression the object 'o' is evaluated twice,
+       while in the method call it is only evaluated once.]
+
+
+\[label typesetter]
+\[subsection The '~' Method]
+
+When Hormone tries to typeset an object with the '~~~' (typesetter) function
+(see \[guide/hormone/basic#typesetter]),
+it will first try to call a method with the name '~',
+which we call the \[emph typesetter method],
+which should be a method that returns a string.
+
+If the typesetter exists in an object,
+then the value returned by method-calling the typesetter
+will be the string value of this object.
+Otherwise, Hormone falls back to the default representation.
+
+\(~H #&quot;
+(&lt;- o (&gt;+&lt; . (x 1)))
+
+(&lt;- o-with-typesetter
+ (&gt;+&lt; . (x 1) (~~ (\(s) (&gt;~&lt; ~&quot;[x = ~&quot; (&gt;+ s x) ~&quot;]~&quot;)))))&quot;)
+
+\(&lt;- o (&gt;+&lt; . (x 1)))
+\(&lt;- o-with-typesetter
+  (&gt;+&lt; . (x 1)
+         (~ (\(s) (&gt;~&lt; &quot;[x = &quot; (&gt;+ s x) &quot;]&quot;)))))
+
+\[~H o]
+\[~H o-with-typesetter]
+
+
+\[subsection Objects as References]
+
+Like in languages such as Java and Python, objects are passed \[emph by reference].
+This means if you assign an object to multiple variables,
+all those variables will have the same reference that points to the same object.
+If any one of those references is 'updated' using '!+&lt;',
+the change will be seen by all of them:
+
+\(~H #&quot;
+(&lt;- o (&gt;+&lt; . (x 1)))
+(&lt;- o1 o)
+(!+&lt; o1 (x 2))
+o&quot;) \(&lt;- o (&gt;+&lt; . (x 1))) \(&lt;- o1 o) \(!+&lt; o1 (x 2))
+
+\(~H #&quot;
+(!+&lt; o1 (y 3))
+(&lt;- o2 o)
+o2&quot;)
+
+This means if you need a copy of an object that is not a mere reference
+to an existing object, you need to use '+&lt;' (mitosis).
+This also means if you need a mutable reference
+that can live across fragments, you can use an object.
+
+
+
+
+</pre><script>
+
+let source_hidden = false;
+let source = document.querySelector("#doc-source");
+let toggle = document.querySelector("#doc-toggle");
+
+function hide_source() {
+  source.style.display = "none";
+  toggle.innerHTML = "Show";
+  source_hidden = true;
+}
+
+function show_source () {
+  source.style.display = "block";
+  toggle.innerHTML = "Hide";
+  source_hidden = false;
+}
+
+function toggle_source() {
+  (source_hidden ? show_source : hide_source)();
+}
+
+toggle.onclick = toggle_source;
+
+hide_source();</script></div></div>
+        <hr/>
+        <pre> </pre>
+        <hr/>
+        <span>5599 - 10.88ms</span>
+    </body>
+</html>

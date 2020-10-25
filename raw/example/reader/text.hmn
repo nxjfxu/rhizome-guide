@@ -1,0 +1,13 @@
+#~
+
+This is a piece of text.  It starts with #~,
+so it typesets objects using their reader methods:
+
+\[<~ example/a-thousand-plateaus]
+
+Hormone expressions in a text must be placed after a '\\' (backslash):
+
+\\(+ 1 2 3) =>
+\(+ 1 2 3)
+
+Back: \[guide/hormone/reader]

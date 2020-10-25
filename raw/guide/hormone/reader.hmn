@@ -1,0 +1,73 @@
+#~ ~document
+
+\[title Hormone Reader]
+
+When a text fragment is processes as a Hormone script,
+Hormone does the following two things:
+
+\(itemize
+(item (>~< "Determine if the script is in " [emph text mode]
+            " or in " [emph code mode] "."))
+(item (>~< "Determine which " [emph reader] " to use for the script."))
+)
+
+Hormone has two parsing modes: text mode and code mode.
+In text mode, contents of the script are treated as text strings,
+and an expression must come after a '\\\\' (backslash).
+In code mode, the content of the script is treated as a series of expressions.
+No '\\\\'s are needed, and strings must be put into double quotes.
+
+Hormone chooses the reader based on the first line of a Hormone program.
+It follows the following rules:
+
+\(itemize
+[item If the first line starts with '#~',
+      the text is in text mode, and the what comes after '#~'
+      is the name of the reader.
+      If no reader is specified, then by default '~~~' (typeset) will be the reader.]
+
+[item If the first line starts with '#!',
+      the text is in text mode, and the what comes after '#!'
+      is the name of the reader.
+      If no reader is specified, then by default '>>' (do) will be the reader.]
+
+[item If the first line does not start with either '#~' or '#!',
+      the text is in text mode, and the default reader '~~~' will be used.]
+)
+
+\[note The 'reader name' must be the name of a function
+       'provided' by the prelude.]
+
+The reader will be 'applied'
+to contents of the file just like a regular function application.
+
+\(itemize
+[item If the script is in text mode,
+      then the text will become strings as arguments,
+      and the Hormone expressions within the text become arguments as they are.]
+
+[item If the script is in code mode, the expressions in the body
+      will become the arguments.]
+)
+
+Here are some examples:
+
+\(itemize
+(item (>~< [example/reader/text] " is a piece of text, evaluated using the text reader."))
+(item (>~< [example/reader/markdown]
+           " is also a piece of text, evaluated using the '~markdown' function."
+           "  (see: " [guide/hormone/special#markdown] ".)"
+))
+
+(item (>~< [example/reader/addition] " is a script in code mode,
+           that uses '+' (add) as the reader."))
+(item (>~< [example/reader/sequence] " is a script in code mode,
+           that uses the default '>>' (do) reader."))
+
+(item (>~< "This fragment, and all other fragments in this guide,
+            uses the '~document' reader in text mode.
+            You can find the definition of '~document' at "
+            [lib/document]
+            "."))
+)
+

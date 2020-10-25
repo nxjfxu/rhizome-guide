@@ -1,0 +1,198 @@
+#~ ~document
+
+\[title Data Structures in Hormone]
+
+\[section Pair]
+
+In Hormone, you can use the '><' (cons) function
+to put two values together into a pair:
+
+\(~H #"(>< 1 ~"hello~")")
+
+\(~H #"
+(<- p (>< (>< #+ 2) (>< 3 ~"b~")))
+p") \(<- p (>< (>< #+ 2) (>< 3 "b")))
+
+To get the first element in a pair, you can use the '<><' (car) function.
+To get the second, you can use '><>' (cdr):
+
+\(~H #"(<>< (>< 1 2))")
+
+\(~H #"(><> (>< 1 2))")
+
+\(~H #"(* (><> (<>< p)) (<>< (><> p)))")
+
+
+\[section List]
+
+In Hormone, a list is either
+
+\(itemize
+[item An empty list, written as either '.' or '()']
+[item A pair, whose second element is a list]
+)
+
+For example, this is a list:
+
+\(~H #"(>< 1 (>< 2 (>< 3 ())))")
+
+An empty list, to be precise.
+
+This is also a list:
+
+\[~H ()]
+
+But this is not a list:
+
+\(~H #"(>< 1 (>< 2 (>< 3 4)))")
+
+Since lists are essentially pairs with special structures,
+you can use the two pair functions to access elements of a list:
+
+\(~H #"
+(<- l (>< 1 (>< ~"a~" (>< 3 ()))))
+(+ (<>< l) (<>< (><> (><> l))))")
+
+
+\[section Object]
+
+You can use \[emph objects] to more efficiently organize information.
+In a Hormone object, there are
+
+\(itemize
+ (item (>~< "A table of " [emph attributes] " that maps names to values"))
+ [item The 'prototype' of this object.  We will discuss this in the next chapter.]
+)
+
+In the following example,
+we create an object with two attributes:
+'x' with value '10', and 'y' with value '\(+ 10 10)':
+
+\(~H #"(>+< . (x 10) (y (+ 10 10)))")
+
+When creating an object, the values of the attributes will be evaluated,
+before they are put into the objects.
+
+To access the value of the attributes, you can use the '>+' (access) function:
+
+\(~H #"
+(<- point (>+< . (x 10) (y (+ 10 10))))
+(>+ point y)") \(<- point (>+< . (x 10) (y (+ 10 10))))
+
+To check if an object has a certain attribute,
+you can use the '>+?' (has-attribute) function,
+which returns \#-  if the attribute does not exist,
+and returns the attribute's value if it exists.
+
+\(~H #"(>+? point z)")
+\(~H #"(>+? point x)")
+
+\[note Remember that any non-false value is treated as 'true'
+       by the '?' (if) function.] 
+
+You can use the '+<' (mitosis) function to create a (shallow)
+copy of an existing object, possibly updating its attributes
+or add new attributes as you do so:
+
+\(~H #"
+(<- point2 (+< point (z 1)))
+(<- point3 (+< point (y (* (>+ point2 x) 3))))
+
+(>< (>+ point2 z) (>< (>+ point3 y) (>< (>+ point3 x) ())))")
+\(<- point2 (+< point (z 1)))
+
+\[note The attributes in the original object are not changed by mitosis.]
+
+\[~H point]
+
+You can use the '!+<' (update) function to update attributes
+of an existing object in-situ:
+
+\(~H #"
+(!+< point2 (z 2) (x 1))
+point2")
+
+
+\[subsection Method Calls]
+
+Because functions are values, object attributes can be functions.
+Often, you can write down operations regarding an object
+as functions that takes the object as its first argument,
+and store such functions as the attribute of the object.
+Such attributes are called \[emph methods].
+
+To call a method, you can use the '->' (call) function:
+
+\(~H #"
+(<- p (>+< . (sum (\(s) (+ (>+ s x) (>+ s y))))
+             (set-x! (\(s new-x) (!+< s (x new-x))))
+             (x 1)
+             (y 2)))
+(-> p set-x! 10)
+(-> p sum)")
+
+The first argument to '->' should be the object.
+The second should be the method's name.
+After that, you can have any number of arguments.
+
+\[note A method call '(-> o f a b c)'
+       is similar to '((>+ o f) o a b c)',
+       except in the second expression the object 'o' is evaluated twice,
+       while in the method call it is only evaluated once.]
+
+
+\[label typesetter]
+\[subsection The '~' Method]
+
+When Hormone tries to typeset an object with the '~~~' (typesetter) function
+(see \[guide/hormone/basic#typesetter]),
+it will first try to call a method with the name '~',
+which we call the \[emph typesetter method],
+which should be a method that returns a string.
+
+If the typesetter exists in an object,
+then the value returned by method-calling the typesetter
+will be the string value of this object.
+Otherwise, Hormone falls back to the default representation.
+
+\(~H #"
+(<- o (>+< . (x 1)))
+
+(<- o-with-typesetter
+ (>+< . (x 1) (~~ (\(s) (>~< ~"[x = ~" (>+ s x) ~"]~")))))")
+
+\(<- o (>+< . (x 1)))
+\(<- o-with-typesetter
+  (>+< . (x 1)
+         (~ (\(s) (>~< "[x = " (>+ s x) "]")))))
+
+\[~H o]
+\[~H o-with-typesetter]
+
+
+\[subsection Objects as References]
+
+Like in languages such as Java and Python, objects are passed \[emph by reference].
+This means if you assign an object to multiple variables,
+all those variables will have the same reference that points to the same object.
+If any one of those references is 'updated' using '!+<',
+the change will be seen by all of them:
+
+\(~H #"
+(<- o (>+< . (x 1)))
+(<- o1 o)
+(!+< o1 (x 2))
+o") \(<- o (>+< . (x 1))) \(<- o1 o) \(!+< o1 (x 2))
+
+\(~H #"
+(!+< o1 (y 3))
+(<- o2 o)
+o2")
+
+This means if you need a copy of an object that is not a mere reference
+to an existing object, you need to use '+<' (mitosis).
+This also means if you need a mutable reference
+that can live across fragments, you can use an object.
+
+
+

@@ -1,0 +1,25 @@
+#~ >~<
+
+let source_hidden = false;
+let source = document.querySelector(\#"~"#doc-source~"");
+let toggle = document.querySelector(\#"~"#doc-toggle~"");
+
+function hide_source() {
+  source.style.display = \#"~"none~"";
+  toggle.innerHTML = \#"~"Show~"";
+  source_hidden = true;
+}
+
+function show_source () {
+  source.style.display = \#"~"block~"";
+  toggle.innerHTML = \#"~"Hide~"";
+  source_hidden = false;
+}
+
+function toggle_source() {
+  (source_hidden ? show_source : hide_source)();
+}
+
+toggle.onclick = toggle_source;
+
+hide_source();

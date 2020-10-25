@@ -1,0 +1,38 @@
+#!
+
+(<- code (\(t) (>~< "```" t "```")))
+
+(<- label (\(t) (>~< #"<a id=~"" t #"~"/>")))
+
+(<- emph (\(t) (>~< "*" t "*")))
+
+(<- title (\(t) (>~< "~<# " t)))
+(<- section (\(t) (>~< "~<## " t)))
+(<- subsection (\(t) (>~< "~<### " t)))
+
+(<- itemize (\is (.> >~< (map (\(i) (>~< "+ " i "~<")) is))))
+(<- item (\(i) i))
+
+(<- note (\(t)
+ (>~< #"<div class=~"note~">"
+      #"<span class=~"block-title note-title~">Note</span>"
+      #"<span>" t #"</span>"
+      #"</div>")
+))
+
+(<- warning (\(t)
+ (>~< #"<div class=~"warning~">"
+      #"<span class=~"block-title warning-title~">Warning!</span>"
+      #"<span>" t #"</span>"
+      #"</div>")
+))
+
+(~> code
+    label
+
+    emph
+    title section subsection
+    
+    itemize item
+
+    note warning)
