@@ -13,3 +13,10 @@ or at by changing the 'item' in the URL to 'raw'
 (for example, \(/> "./../raw/guide" ~page-extension)).
 
 To begin, proceed to \[guide/rhizome] for a brief overview of Rhizome.
+
+
+\[section Installing Rhizome/Hormone]
+
+You can find Rhizome/Hormone and an installation guide on GitHub:
+\[/> https://github.com/nxjfxu/rhizome]
+
